@@ -2,7 +2,6 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import VideoProjects from "@/components/VideoProjects";
 import MusicProjects from "@/components/MusicProjects";
-import TechStack from "@/components/TechStack";
 import Terminal from "@/components/Terminal";
 
 export default function Home() {
@@ -15,7 +14,6 @@ export default function Home() {
       <div id="projects">
         <VideoProjects />
         <MusicProjects />
-        <TechStack />
         <Terminal />
       </div>
     </main>

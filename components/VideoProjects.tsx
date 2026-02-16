@@ -40,7 +40,7 @@ export default function VideoProjects() {
                             />
 
                             {/* Scanning Line Animation */}
-                            <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-white/5 to-transparent h-full w-full animate-pulse pointer-events-none" />
+                            <div className="absolute inset-0 z-0 bg-linear-to-b from-transparent via-white/5 to-transparent h-full w-full animate-pulse pointer-events-none" />
 
                             {/* Tech Decor: ID Numbers */}
                             <div className="absolute top-6 left-6 text-[10px] text-gray-600 font-mono tracking-widest">
@@ -79,7 +79,7 @@ export default function VideoProjects() {
                                     <div className="absolute bottom-0 right-0 w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                                     {/* Glitch Overlay */}
-                                    <div className="absolute inset-0 bg-interaction-red/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 delay-75 mix-blend-screen" />
+                                    <div className="absolute inset-0 bg-interaction-red/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 delay-75 mix-blend-screen" />
                                 </button>
 
                                 <div className="text-[10px] uppercase tracking-widest text-gray-600 font-mono group hover:text-gray-400 transition-colors cursor-default">

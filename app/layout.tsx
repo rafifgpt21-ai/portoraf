@@ -5,6 +5,7 @@ import Background from "@/components/Background";
 import SystemOverlay from "@/components/SystemOverlay";
 
 import TelemetryTopBar from "@/components/TelemetryTopBar";
+import { AudioProvider } from "@/app/context/AudioContext";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -43,12 +44,14 @@ export default function RootLayout({
         className={`${oswald.variable} ${jetbrainsMono.variable} ${orbitron.variable} ${archivoBlack.variable} antialiased bg-cyber-black text-white selection:bg-interaction-red selection:text-black overflow-x-hidden`}
       >
         <div className="fixed inset-0 pointer-events-none z-50 bg-[url('/noise.svg')] opacity-[0.05] mix-blend-overlay"></div>
-        <Background />
-        <SystemOverlay />
-        <TelemetryTopBar />
-        <div className="md:pl-12 pl-0 pt-8 transition-all duration-300 w-full">
-          {children}
-        </div>
+        <AudioProvider>
+          <Background />
+          <SystemOverlay />
+          <TelemetryTopBar />
+          <div className="md:pl-12 pl-0 pt-8 transition-all duration-300 w-full">
+            {children}
+          </div>
+        </AudioProvider>
       </body>
     </html>
   );

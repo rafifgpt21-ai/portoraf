@@ -31,7 +31,16 @@ export default function Hero() {
                 </h1>
                 {/* Glitch Overlay (Decorative) */}
                 <div
-                    className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-50 pointer-events-none animate-glitch text-[10vw] md:text-[8vw] leading-[0.85] uppercase tracking-tighter text-interaction-red mix-blend-overlay font-archivo-black"
+                    className="absolute top-0 left-1 w-full h-full opacity-0 group-hover:opacity-50 pointer-events-none animate-glitch text-[10vw] md:text-[8vw] leading-[0.85] uppercase tracking-tighter text-interaction-red mix-blend-overlay font-archivo-black"
+                    aria-hidden="true"
+                    style={{ fontFamily: 'var(--font-archivo-black)' }}
+                >
+                    Rafif Sidqi
+                    <br />
+                    Mokobombang
+                </div>
+                <div
+                    className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-80 pointer-events-none animate-glitch text-[10vw] md:text-[8vw] leading-[0.85] uppercase tracking-tighter text-shadow-interaction-blue font-archivo-black"
                     aria-hidden="true"
                     style={{ fontFamily: 'var(--font-archivo-black)' }}
                 >

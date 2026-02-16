@@ -36,7 +36,7 @@ export default function Background() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1a1a1a_0%,#000000_100%)] opacity-80" />
 
             {/* Base Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#222_1px,transparent_1px),linear-gradient(to_bottom,#222_1px,transparent_1px)] bg-[size:4rem_4rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#222_1px,transparent_1px),linear-gradient(to_bottom,#222_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30" />
 
             {/* Active Grid Cells (Flickering) */}
             <div className="absolute inset-0 mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]">
@@ -60,13 +60,13 @@ export default function Background() {
             {/* Moving Grid Layer (Parallax) */}
             <motion.div
                 style={{ y: y1 }}
-                className="absolute inset-[-50%] w-[200%] h-[200%] bg-[radial-gradient(circle_2px_at_center,#ffffff_1px,transparent_0)] bg-[size:6rem_6rem] opacity-5 rotation-12"
+                className="absolute inset-[-50%] w-[200%] h-[200%] bg-[radial-gradient(circle_2px_at_center,#ffffff_1px,transparent_0)] bg-size-[6rem_6rem] opacity-5 rotation-12"
             />
 
             {/* Secondary Moving Dots (Parallax Reverse) */}
             <motion.div
                 style={{ y: y2 }}
-                className="absolute inset-[-50%] w-[200%] h-[200%] bg-[radial-gradient(circle_2px_at_center,#ffffff_1px,transparent_0)] bg-[size:10rem_10rem] opacity-5"
+                className="absolute inset-[-50%] w-[200%] h-[200%] bg-[radial-gradient(circle_2px_at_center,#ffffff_1px,transparent_0)] bg-size-[10rem_10rem] opacity-5"
             />
         </div>
     );
