@@ -30,13 +30,31 @@ import { useAudio } from "@/app/context/AudioContext";
 
 // ... (keep existing constants)
 
+import { useScroll, useSpring, motion } from "framer-motion";
+
+// ... (keep existing imports)
+
 export default function TelemetryTopBar() {
     const { currentTrack, isPlaying, analyserRef } = useAudio();
+    const { scrollY, scrollYProgress } = useScroll();
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
     const [metrics, setMetrics] = useState<Record<string, number>>({});
     const [log, setLog] = useState("");
     const [jpText, setJpText] = useState(JAPANESE_TEXTS[0]);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [gridState, setGridState] = useState<boolean[]>(Array(12).fill(false));
+    const [scrollDepth, setScrollDepth] = useState(0);
+
+    // Track scroll for telemetry
+    useEffect(() => {
+        return scrollYProgress.on("change", (latest) => {
+            setScrollDepth(Math.floor(latest * 100));
+        });
+    }, [scrollYProgress]);
 
     // Initialize metrics
     useEffect(() => {
@@ -55,8 +73,14 @@ export default function TelemetryTopBar() {
                 const newMetrics = { ...prev };
                 const keyToUpdate = ABSTRACT_LABELS[Math.floor(Math.random() * ABSTRACT_LABELS.length)];
                 newMetrics[keyToUpdate] = Math.floor(Math.random() * 100);
+                // Inject Scroll Data occasionally
+                if (Math.random() > 0.8) {
+                    newMetrics["V-POS"] = Math.floor(window.scrollY);
+                }
                 return newMetrics;
             });
+
+            // ... (keep existing logic)
 
             // Random log update
             if (Math.random() > 0.7) {
@@ -78,7 +102,7 @@ export default function TelemetryTopBar() {
         return () => clearInterval(interval);
     }, []);
 
-    // Canvas Sparkline / Audio Viz
+    // Oscilloscope / Waveform Visualizer
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -86,54 +110,68 @@ export default function TelemetryTopBar() {
         if (!ctx) return;
 
         let animationFrameId: number;
-        let dataPoints: number[] = Array(20).fill(50);
 
         const draw = () => {
             animationFrameId = requestAnimationFrame(draw);
 
-            let audioValue = 0;
-            // Integrate Audio Data if playing
-            if (isPlaying && analyserRef.current) {
-                const bufferLength = analyserRef.current.frequencyBinCount;
-                const dataArray = new Uint8Array(bufferLength);
-                analyserRef.current.getByteFrequencyData(dataArray);
+            const width = canvas.width;
+            const height = canvas.height;
 
-                // Get average of low frequencies for beat detection-ish movement
-                let sum = 0;
-                // Focus on bass frequencies (first 10 bins approx)
-                for (let i = 0; i < 20; i++) {
-                    sum += dataArray[i];
+            ctx.clearRect(0, 0, width, height);
+
+            if (!isPlaying || !analyserRef.current) {
+                // Static Line / Idle State
+                ctx.beginPath();
+                ctx.strokeStyle = '#374151'; // Gray-700
+                ctx.lineWidth = 1;
+                ctx.moveTo(0, height / 2);
+
+                // Add tiny noise for "liveness"
+                for (let i = 0; i < width; i += 5) {
+                    const noise = Math.random() * 2 - 1;
+                    ctx.lineTo(i, (height / 2) + noise);
                 }
-                const average = sum / 20;
-
-                // Map 0-255 to 0-100 range significantly, scaling up the "kick"
-                audioValue = (average / 255) * 80;
+                ctx.stroke();
+                return;
             }
 
-            // Shift data
-            // If audio is playing, use the audioValue, else random noise
-            const randomNoise = Math.random() * 20 - 10;
-            const targetValue = isPlaying ? (audioValue + 20) : (50 + randomNoise);
+            const bufferLength = analyserRef.current.frequencyBinCount; // Should be 128 (fftSize 256)
+            const dataArray = new Uint8Array(bufferLength);
+            analyserRef.current.getByteTimeDomainData(dataArray);
 
-            dataPoints.push(targetValue);
-            if (dataPoints.length > 40) dataPoints.shift();
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.strokeStyle = isPlaying ? '#ef4444' : '#d1d5db'; // Red if playing, Gray if not
             ctx.lineWidth = 1;
+            ctx.strokeStyle = '#ffffff'; // White
+            ctx.beginPath();
 
-            // Draw line
-            for (let i = 0; i < dataPoints.length; i++) {
-                const x = (i / (dataPoints.length - 1)) * canvas.width;
-                // Flip Y axis: 0 at bottom
-                // Value 0-100, canvas height 20. 
-                // We want 100 to be top (y=0) and 0 to be bottom (y=20)
-                const y = canvas.height - (dataPoints[i] / 100) * canvas.height;
+            const sliceWidth = width * 1.0 / bufferLength;
+            let x = 0;
 
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0; // 128 is zero/center
+                const y = (v * height) / 2; // Center is height/2 ? No.
+
+                // dataArray value: 0 (bottom) -> 128 (middle) -> 255 (top)
+                // y needs to map to canvas.height.
+                // Value 128 should be at height/2.
+                // Value 0 should be at height.
+                // Value 255 should be at 0.
+
+                // Normalized: -1 to 1
+                const normalized = (dataArray[i] - 128) / 128;
+
+                // Scale to fit height (maybe amplify a bit since it's small)
+                const yPos = (height / 2) + (normalized * (height / 2));
+
+                if (i === 0) {
+                    ctx.moveTo(x, yPos);
+                } else {
+                    ctx.lineTo(x, yPos);
+                }
+
+                x += sliceWidth;
             }
+
+            ctx.lineTo(width, height / 2);
             ctx.stroke();
         };
 
@@ -147,7 +185,7 @@ export default function TelemetryTopBar() {
             {/* LEFT: System Identity & Status Grid */}
             <div className="flex items-center gap-4 border-r border-white/20 pr-4 h-full">
                 <div className="flex items-center gap-2 text-white">
-                    <Activity className="w-3 h-3 animate-pulse text-red-500" />
+                    <Activity className="w-3 h-3 animate-pulse text-white" />
                     <span className="font-bold tracking-tighter shadow-white drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]">SYS.V.0.9</span>
                 </div>
 
@@ -156,7 +194,7 @@ export default function TelemetryTopBar() {
                     {gridState.map((active, i) => (
                         <div
                             key={i}
-                            className={`w-1 h-1 ${active ? 'bg-red-500 shadow-[0_0_2px_red]' : 'bg-gray-700'}`}
+                            className={`w-1 h-1 ${active ? 'bg-white shadow-[0_0_2px_white]' : 'bg-gray-700'}`}
                         />
                     ))}
                 </div>
@@ -191,7 +229,7 @@ export default function TelemetryTopBar() {
                 {/* Audio Status / Metric Group 2 */}
                 <div className="flex items-center gap-3">
                     <div className="flex flex-col items-end">
-                        <span className={`text-[7px] tracking-widest font-bold ${isPlaying ? 'text-red-500' : 'text-gray-400'}`}>
+                        <span className={`text-[7px] tracking-widest font-bold ${isPlaying ? 'text-white' : 'text-gray-400'}`}>
                             {isPlaying ? "AUDIO_OUT" : "FLUX"}
                         </span>
                         <span className="text-gray-300 font-semibold tracking-wider text-[9px] max-w-[150px] truncate">
@@ -208,13 +246,29 @@ export default function TelemetryTopBar() {
                     </div>
                 </div>
 
+                {/* Depth Sensor Module */}
+                <div className="flex items-center gap-2 border-r border-white/20 pr-3">
+                    <div className="flex flex-col items-end leading-none">
+                        <span className="text-[7px] text-gray-400 font-bold">DEPTH</span>
+                        <span className="text-white font-bold tracking-widest">{scrollDepth.toString().padStart(3, '0')}%</span>
+                    </div>
+                    <div className="w-[80px] h-[10px] bg-gray-900 border border-gray-700 relative overflow-hidden">
+                        <motion.div
+                            className="h-full bg-white shadow-[0_0_4px_white]"
+                            style={{ scaleX, originX: 0 }}
+                        />
+                    </div>
+                </div>
+
                 {/* Rolling Text Stream */}
                 <div className="flex items-center gap-2 whitespace-nowrap text-gray-300 font-medium">
-                    <span className="text-red-500">::</span>
+                    <span className="text-gray-500">::</span>
+                    <span className="text-gray-500">::</span>
+                    <span className="text-gray-500">::</span>
                     <span>{metrics["ION"] ?? 0}</span>
-                    <span className="text-red-500">::</span>
+                    <span className="text-gray-500">::</span>
                     <span>{metrics["WAVE"] ?? 0}</span>
-                    <span className="text-red-500">::</span>
+                    <span className="text-gray-500">::</span>
                     <span>{metrics["PULSE"] ?? 0}</span>
                 </div>
             </div>
@@ -234,7 +288,7 @@ export default function TelemetryTopBar() {
             </div>
 
             {/* Bottom Accent Line */}
-            <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-red-500/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/50 to-transparent" />
         </div>
     );
 }

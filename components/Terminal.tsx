@@ -142,12 +142,43 @@ const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon, 
     const [copied, setCopied] = useState(false);
     const [isHovered, setIsHovered] = useState(false); // Track hover state for lock-on effect
 
-    const handleCopy = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        navigator.clipboard.writeText(copyValue);
+    const handleSuccess = () => {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
+    };
+
+    const fallbackCopy = (text: string) => {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            handleSuccess();
+        } catch (err) {
+            console.error('Fallback: Oops, unable to copy', err);
+        }
+        document.body.removeChild(textArea);
+    };
+
+    const handleCopy = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!navigator.clipboard) {
+            fallbackCopy(copyValue);
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(copyValue);
+            handleSuccess();
+        } catch (err) {
+            console.error('Clipboard API failed', err);
+            fallbackCopy(copyValue);
+        }
     };
 
     return (
@@ -192,12 +223,12 @@ const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon, 
             <div className="p-4 md:p-6 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between relative z-10">
                 {/* Left: Info */}
                 <div className="flex gap-4 items-center">
-                    <div className={`p-3 bg-transparent border border-white/20 text-interaction-red group-hover:border-interaction-red transition-colors duration-300`}>
+                    <div className={`p-3 bg-transparent border border-white/20 text-gray-400 group-hover:text-interaction-red group-hover:border-interaction-red transition-colors duration-300`}>
                         {icon}
                     </div>
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-[10px] font-mono uppercase tracking-widest text-interaction-red font-bold`}>{label}</span>
+                            <span className={`text-[10px] font-mono uppercase tracking-widest text-gray-500 group-hover:text-interaction-red font-bold transition-colors`}>{label}</span>
                             <span className="text-[10px] text-white/40 font-mono">[{subLabel}]</span>
                         </div>
                         <h3 className="text-lg md:text-xl font-mono text-white group-hover:text-interaction-red transition-colors duration-300 font-bold">
@@ -219,18 +250,18 @@ const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon, 
                     </a>
                     <button
                         onClick={handleCopy}
-                        className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-white/20 font-mono text-xs uppercase tracking-wider transition-all duration-300 font-bold ${copied ? 'bg-interaction-red border-interaction-red text-black' : 'hover:border-interaction-red hover:bg-interaction-red hover:text-black text-white'}`}
+                        className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-white/20 font-mono text-xs uppercase tracking-wider transition-all duration-300 font-bold ${copied ? 'bg-interaction-red border-interaction-red text-black shadow-[0_0_15px_rgba(255,0,0,0.5)]' : 'hover:border-interaction-red hover:bg-interaction-red hover:text-black text-white'}`}
                     >
                         <AnimatePresence mode="wait">
                             {copied ? (
                                 <motion.span
                                     key="copied"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    className="flex items-center gap-2"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 1.2 }}
+                                    className="flex items-center gap-2 font-black"
                                 >
-                                    COPIED <Check size={14} />
+                                    [DATA_COPIED] <Check size={14} strokeWidth={3} />
                                 </motion.span>
                             ) : (
                                 <motion.span
@@ -249,7 +280,7 @@ const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon, 
             </div>
 
             {/* Decorative Scanline */}
-            <div className="absolute inset-0 bg-linear-to-r from-transparent via-interaction-red/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
         </motion.div>
     );
 };
@@ -261,12 +292,12 @@ export default function Terminal() {
             {/* Header */}
             <div className="flex flex-col md:flex-row items-baseline gap-4 mb-12 border-b border-white/20 pb-4 w-full">
                 <div className="flex items-center gap-3">
-                    <TerminalIcon className="text-interaction-red w-6 h-6 animate-pulse" />
-                    <h2 className="text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter cursor-crosshair">
+                    <TerminalIcon className="text-white w-6 h-6" />
+                    <h2 className="text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter cursor-crosshair hover:text-interaction-red transition-colors duration-300">
                         <GlitchText text="[Connection_Protocol]" />
                     </h2>
                 </div>
-                <div className="flex gap-4 text-xs font-mono text-interaction-red font-bold">
+                <div className="flex gap-4 text-xs font-mono text-gray-500 font-bold">
                     <span>STATUS: OPEN</span>
                     <span>ENCRYPTION: ENABLED</span>
                 </div>
@@ -279,17 +310,17 @@ export default function Terminal() {
                     <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-size-[100%_4px,3px_100%] bg-repeat opacity-10 z-10" />
 
                     <div className="mb-4 text-white font-bold z-10">
-                        <span className="text-interaction-red">{">"}</span> <TypingEffect text="SYSTEM_DIAGNOSTIC_TOOL_V2.4" speed={50} />
+                        <span className="text-gray-500">{">"}</span> <TypingEffect text="SYSTEM_DIAGNOSTIC_TOOL_V2.4" speed={50} />
                         <br />
-                        <span className="text-interaction-red">{">"}</span> <TypingEffect text="CHECKING_PORTS... OK" delay={1500} speed={30} />
+                        <span className="text-gray-500">{">"}</span> <TypingEffect text="CHECKING_PORTS... OK" delay={1500} speed={30} />
                         <br />
-                        <span className="text-interaction-red">{">"}</span> <TypingEffect text="PINGING_JAKARTA_SERVER... 4ms" delay={3000} speed={20} />
+                        <span className="text-gray-500">{">"}</span> <TypingEffect text="PINGING_JAKARTA_SERVER... 4ms" delay={3000} speed={20} />
                     </div>
 
                     <div className="space-y-2 grow opacity-80 font-bold z-10">
-                        <p className="flex"><span className="text-interaction-red mr-2">{">"}</span> <TypingEffect text="INCOMING_TRANSMISSION_REQUEST..." delay={4500} /></p>
-                        <p className="flex"><span className="text-interaction-red mr-2">{">"}</span> <TypingEffect text="SELECT_PROTOCOL_BELOW_TO_PROCEED" delay={6500} /></p>
-                        <p className="flex"><span className="text-interaction-red mr-2">{">"}</span> <TypingEffect text="WAITING_FOR_USER_INPUT_" delay={8000} /><span className="inline-block w-2 h-4 bg-interaction-red animate-pulse ml-1" /></p>
+                        <p className="flex"><span className="text-gray-500 mr-2">{">"}</span> <TypingEffect text="INCOMING_TRANSMISSION_REQUEST..." delay={4500} /></p>
+                        <p className="flex"><span className="text-gray-500 mr-2">{">"}</span> <TypingEffect text="SELECT_PROTOCOL_BELOW_TO_PROCEED" delay={6500} /></p>
+                        <p className="flex"><span className="text-gray-500 mr-2">{">"}</span> <TypingEffect text="WAITING_FOR_USER_INPUT_" delay={8000} /><span className="inline-block w-2 h-4 bg-gray-500 animate-pulse ml-1" /></p>
 
                         <div className="mt-4 p-2 border border-dashed border-white/20 text-white/50 break-all hover:text-interaction-red hover:border-interaction-red transition-colors duration-300 h-32 overflow-hidden relative">
                             <HexStream />
@@ -301,12 +332,12 @@ export default function Terminal() {
 
                     <div className="mt-auto pt-4 border-t border-white/20 flex justify-between items-center text-[10px] text-white/60 font-bold z-10">
                         <span>UPTIME: 99.9%</span>
-                        <span className="animate-pulse bg-interaction-red text-black px-1">ONLINE</span>
+                        <span className="bg-white text-black px-1 font-bold">ONLINE</span>
                     </div>
                 </div>
 
                 {/* Right Panel: Interactive Contact List */}
-                <div id="contact-protocols" className="lg:col-span-2 flex flex-col gap-4">
+                <div id="contact-protocols" className="lg:col-span-2 flex flex-col gap-4 ">
                     <ContactProtocol
                         label="WHATSAPP_UPLINK"
                         subLabel="DIRECT_LINE"
@@ -314,7 +345,7 @@ export default function Terminal() {
                         copyValue="+628559895967"
                         actionLink="https://wa.me/628559895967"
                         icon={<Phone size={20} />}
-                        color="red"
+                        color="white"
                     />
 
                     <ContactProtocol
@@ -324,7 +355,7 @@ export default function Terminal() {
                         copyValue="rafifsidqi2138@gmail.com"
                         actionLink="mailto:rafifsidqi2138@gmail.com"
                         icon={<Mail size={20} />}
-                        color="red"
+                        color="white"
                     />
 
                     <ContactProtocol
@@ -334,7 +365,7 @@ export default function Terminal() {
                         copyValue="https://www.linkedin.com/in/rafifsidqi"
                         actionLink="https://www.linkedin.com/in/rafifsidqi"
                         icon={<ExternalLink size={20} />}
-                        color="red"
+                        color="white"
                     />
                 </div>
             </div>

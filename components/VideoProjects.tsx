@@ -10,7 +10,13 @@ export default function VideoProjects() {
 
     return (
         <section className="py-20 px-4 md:px-12 w-full border-t border-gray-900">
-            <div className="flex items-center gap-4 mb-12">
+            <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="flex items-center gap-4 mb-12"
+            >
                 <div className="w-4 h-4 bg-white" />
                 <h2 className="text-4xl md:text-8xl font-bold text-white uppercase tracking-tighter flex flex-col md:flex-row items-baseline gap-4">
                     [Project_Recap]
@@ -19,9 +25,15 @@ export default function VideoProjects() {
                 <div className="h-1 grow bg-gray-800 ml-4 relative overflow-hidden">
                     <div className="absolute top-0 left-0 h-full w-1/3 bg-white animate-glitch opacity-50"></div>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="relative w-full overflow-hidden min-h-[200px] flex items-center justify-center">
+            <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                whileInView={{ height: "auto", opacity: 1 }}
+                transition={{ duration: 1, ease: "anticipate" }}
+                viewport={{ once: true, margin: "-100px" }}
+                className="relative w-full overflow-hidden min-h-[200px] flex items-center justify-center"
+            >
                 <AnimatePresence mode="wait">
                     {!isVisible ? (
                         <motion.div
@@ -79,7 +91,7 @@ export default function VideoProjects() {
                                     <div className="absolute bottom-0 right-0 w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                                     {/* Glitch Overlay */}
-                                    <div className="absolute inset-0 bg-interaction-red/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 delay-75 mix-blend-screen" />
+                                    <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 delay-75 mix-blend-screen" />
                                 </button>
 
                                 <div className="text-[10px] uppercase tracking-widest text-gray-600 font-mono group hover:text-gray-400 transition-colors cursor-default">
@@ -105,7 +117,7 @@ export default function VideoProjects() {
                             {/* Terminate Button */}
                             <button
                                 onClick={() => setIsVisible(false)}
-                                className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-1 bg-black/80 border border-interaction-red/50 text-interaction-red text-xs font-mono tracking-widest hover:bg-interaction-red/10 hover:border-interaction-red transition-all duration-300 cursor-pointer"
+                                className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-1 bg-black/80 border border-gray-600/50 text-gray-400 hover:text-white text-xs font-mono tracking-widest hover:bg-gray-800 hover:border-white transition-all duration-300 cursor-pointer"
                             >
                                 <X className="w-3 h-3" />
                                 TERMINATE_SIGNAL
@@ -127,13 +139,13 @@ export default function VideoProjects() {
                             <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-white opacity-50 group-hover:opacity-100 transition-opacity" />
 
                             {/* Status Text */}
-                            <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 font-mono text-xs text-interaction-red opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 font-mono text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">
                                 Playback_Active
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </div>
+            </motion.div>
         </section>
     );
 }

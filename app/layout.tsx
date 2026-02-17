@@ -3,9 +3,10 @@ import { Oswald, JetBrains_Mono, Orbitron, Archivo_Black } from "next/font/googl
 import "./globals.css";
 import Background from "@/components/Background";
 import SystemOverlay from "@/components/SystemOverlay";
-
 import TelemetryTopBar from "@/components/TelemetryTopBar";
 import { AudioProvider } from "@/app/context/AudioContext";
+
+import CyberBackground from "@/components/CyberBackground";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -46,6 +47,8 @@ export default function RootLayout({
         <div className="fixed inset-0 pointer-events-none z-50 bg-[url('/noise.svg')] opacity-[0.05] mix-blend-overlay"></div>
         <AudioProvider>
           <Background />
+          <CyberBackground />
+
           <SystemOverlay />
           <TelemetryTopBar />
           <div className="pl-0 transition-all duration-300 w-full">

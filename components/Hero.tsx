@@ -63,20 +63,20 @@ export default function Hero() {
             {/* Detail Specs - Bottom Right */}
             <div className="absolute bottom-40 md:bottom-8 right-4 md:right-8 grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-gray-400 text-xs md:text-sm max-w-xs md:max-w-md text-right md:text-left">
                 <div className="border border-gray-800 p-2 relative group hover:border-interaction-red transition-colors bg-black/80 backdrop-blur-sm">
-                    <div className="absolute top-0 left-0 w-1 h-1 bg-gray-800 group-hover:bg-interaction-red transition-colors" />
+                    <div className="absolute top-0 left-0 w-1 h-1 bg-gray-600 group-hover:bg-interaction-red transition-colors" />
                     <h3 className="text-gray-500 mb-1 uppercase tracking-wider group-hover:text-interaction-red transition-colors">[LANGUAGE] <span className="text-[10px]">言語</span></h3>
                     <p className="text-white">English: C1 Advanced</p>
                 </div>
 
                 <div className="border border-gray-800 p-2 relative group hover:border-interaction-red transition-colors bg-black/80 backdrop-blur-sm">
-                    <div className="absolute bottom-0 right-0 w-1 h-1 bg-gray-800 group-hover:bg-interaction-red transition-colors" />
+                    <div className="absolute bottom-0 right-0 w-1 h-1 bg-gray-600 group-hover:bg-interaction-red transition-colors" />
                     <h3 className="text-gray-500 mb-1 uppercase tracking-wider group-hover:text-interaction-red transition-colors">[CORE] <span className="text-[10px]">コア</span></h3>
                     <p className="text-white">Systems Engineer</p>
                 </div>
 
                 <button
                     onClick={() => document.getElementById('contact-protocols')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="col-span-1 md:col-span-2 mt-2 py-3 border border-interaction-red bg-black/50 text-interaction-red hover:bg-interaction-red hover:text-black transition-all duration-300 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 group/btn relative z-20 shadow-red-glow cursor-pointer"
+                    className="col-span-1 md:col-span-2 mt-2 py-3 border border-interaction-red bg-black/50 text-interaction-red hover:bg-interaction-red hover:text-black transition-all duration-300 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 group/btn relative z-20 shadow-red-glow cursor-pointer animate-pulse hover:animate-none"
                 >
                     <span className="group-hover/btn:animate-pulse">[ ESTABLISH_CONNECTION ]</span>
                 </button>

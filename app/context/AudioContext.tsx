@@ -45,6 +45,78 @@ export const tracks: Track[] = [
         duration: "1:02",
         src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/bass%20heaven.mp3",
     },
+    {
+        id: 3,
+        title: "Orchestral Madness",
+        artist: "Raf",
+        genre: "Orchestral",
+        bpm: 120, // Estimated/Placeholder
+        duration: "3:30", // Placeholder
+        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/Challange%20no%208%20Orchestral%20madness.mp3",
+    },
+    {
+        id: 4,
+        title: "Lullaby",
+        artist: "Ila & Raf",
+        genre: "Ballad",
+        bpm: 80, // Estimated/Placeholder
+        duration: "3:45", // Placeholder
+        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/Master%203.mp3",
+    },
+    {
+        id: 5,
+        title: "Lunar Candy",
+        artist: "Raf",
+        genre: "Synthwave",
+        bpm: 110, // Estimated/Placeholder
+        duration: "3:20", // Placeholder
+        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/day%204.mp3",
+    },
+    {
+        id: 6,
+        title: "Cry (Raf Cover)",
+        artist: "Cigarettes After Sex",
+        genre: "Alternative",
+        bpm: 95, // Estimated/Placeholder
+        duration: "4:00", // Placeholder
+        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/cry%20baby%20FINAL%204.mp3",
+    },
+    {
+        id: 7,
+        title: "Uranium",
+        artist: "Raf",
+        genre: "Trap",
+        bpm: 140, // Estimated/Placeholder
+        duration: "2:50", // Placeholder
+        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/day%206.mp3",
+    },
+    {
+        id: 8,
+        title: "World Civilization",
+        artist: "Raf & Gadiza",
+        genre: "House",
+        bpm: 124, // Estimated/Placeholder
+        duration: "3:39", // Estimated based on typical songs or use placeholder
+        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/jafest%2090000000.mp3",
+    },
+    {
+        id: 9,
+        title: "Polaris",
+        artist: "Raf",
+        genre: "Orchestral",
+        bpm: 110, // Estimated/Placeholder
+        duration: "3:10", // Placeholder
+        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/day%204.mp3",
+    },
+    {
+        id: 10,
+        title: "Aurora",
+        artist: "Raf",
+        genre: "Mid Tempo & Trap",
+        bpm: 100, // Estimated/Placeholder
+        duration: "3:15", // Placeholder
+        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/Aurora.mp3",
+    },
 ];
 
 export function AudioProvider({ children }: { children: ReactNode }) {
@@ -98,7 +170,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
                 sourceRef.current.connect(analyserRef.current);
                 analyserRef.current.connect(audioContextRef.current.destination);
             }
-            analyserRef.current.fftSize = 256;
+            analyserRef.current.fftSize = 8192;
         }
     };
 
