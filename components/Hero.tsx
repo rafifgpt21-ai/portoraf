@@ -74,12 +74,23 @@ export default function Hero() {
                     <p className="text-white">Systems Engineer</p>
                 </div>
 
-                <button
-                    onClick={() => document.getElementById('contact-protocols')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="col-span-1 md:col-span-2 mt-2 py-3 border border-interaction-red bg-black/50 text-interaction-red hover:bg-interaction-red hover:text-black transition-all duration-300 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 group/btn relative z-20 shadow-red-glow cursor-pointer animate-pulse hover:animate-none"
-                >
-                    <span className="group-hover/btn:animate-pulse">[ ESTABLISH_CONNECTION ]</span>
-                </button>
+                <div className="flex flex-col gap-2 col-span-1 md:col-span-2 mt-2">
+                    <button
+                        onClick={() => document.getElementById('contact-protocols')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="w-full py-3 border border-interaction-red bg-black/50 text-interaction-red hover:bg-interaction-red hover:text-black transition-all duration-300 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 group/btn relative z-20 shadow-red-glow cursor-pointer animate-pulse hover:animate-none"
+                    >
+                        <span className="group-hover/btn:animate-pulse">[ ESTABLISH_CONNECTION ]</span>
+                    </button>
+
+                    <a
+                        href="https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/RAFIF%20SIDQI%20MOKOBOMBANG.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2 border border-white/20 hover:border-white bg-black/50 text-gray-400 hover:text-white transition-all duration-300 text-[10px] font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 group/dl relative z-20 cursor-pointer"
+                    >
+                        <span className="group-hover/dl:text-white transition-colors">[ DOWNLOAD_PERSONNEL_FILE ]</span>
+                    </a>
+                </div>
             </div>
 
             {/* Decorative Elements */}
