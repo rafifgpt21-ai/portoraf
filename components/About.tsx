@@ -240,15 +240,19 @@ export default function About() {
 
                         <p>
                             <span className="text-gray-600 mr-2">01</span>
-                            I am a <ScrambleText text="Creative Technologist" className="text-white font-bold hover:text-white transition-colors" /> with a background in <ScrambleText text="Information Systems" className="text-white font-bold hover:text-white transition-colors" />, working at the intersection of technology and audio-visual production.
+                            I am a <ScrambleText text="Creative Technologist" className="text-white font-bold hover:text-white transition-colors" /> specializing in high-end <span className="text-white">Audio and Visual production</span>. From professional camera operation and cinematic color grading in <span className="text-white">DaVinci Resolve</span> to high-fidelity music composition, mixing, and mastering in <span className="text-white">Cubase</span> and <span className="text-white">FL Studio</span>, I focus on delivering immersive sensory experiences for live concerts, streaming, and post-production.
                         </p>
                         <p>
                             <span className="text-gray-600 mr-2">02</span>
-                            I focus on <span className="text-white">video production</span>, <span className="text-white">audio engineering</span>, and <span className="text-white">web development</span>, combining creative ideas with practical technical solutions.
+                            I hold a <span className="text-white">Bachelor of Computer Science</span> in <ScrambleText text="Information Systems" className="text-white font-bold hover:text-white transition-colors" />, which provides the technical backbone for my creative workflows. This degree allows me to approach media production with a systems-oriented mindset, ensuring that every project is not only creative but also technically optimized and scalable.
                         </p>
                         <p>
                             <span className="text-gray-600 mr-2">03</span>
-                            I enjoy building <ScrambleText text="digital experiences" className="text-white font-bold hover:text-white transition-colors" /> that are simple, functional, and meaningful, while continuously learning and exploring new technologies to improve both creative and technical skills.
+                            Beyond the lens and the studio, I operate as a <ScrambleText text="Business Systems Analyst" className="text-white font-bold hover:text-white transition-colors" /> and <ScrambleText text="Web Developer" className="text-white font-bold hover:text-white transition-colors" />. By leveraging modern stacks like <span className="text-white">Next.js</span> and integrating AI-driven tools, I build functional digital environments that bridge the gap between complex information systems and meaningful user experiences.
+                        </p>
+                        <p>
+                            <span className="text-gray-600 mr-2">04</span>
+                            Driven by a passion for <ScrambleText text="Emerging Tech" className="text-white font-bold hover:text-white transition-colors" />, I continuously explore the frontiers of <span className="text-white">AI</span>, computer hardware, and mobile devices to keep my production and development methods at the cutting edge of the industry.
                         </p>
                     </div>
 
