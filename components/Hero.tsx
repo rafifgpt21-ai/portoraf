@@ -73,6 +73,13 @@ export default function Hero() {
                     <h3 className="text-gray-500 mb-1 uppercase tracking-wider group-hover:text-interaction-red transition-colors">[CORE] <span className="text-[10px]">コア</span></h3>
                     <p className="text-white">Systems Engineer</p>
                 </div>
+
+                <button
+                    onClick={() => document.getElementById('contact-protocols')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="col-span-1 md:col-span-2 mt-2 py-3 border border-interaction-red bg-black/50 text-interaction-red hover:bg-interaction-red hover:text-black transition-all duration-300 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 group/btn relative z-20 shadow-red-glow cursor-pointer"
+                >
+                    <span className="group-hover/btn:animate-pulse">[ ESTABLISH_CONNECTION ]</span>
+                </button>
             </div>
 
             {/* Decorative Elements */}

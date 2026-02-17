@@ -48,7 +48,7 @@ export default function RootLayout({
           <Background />
           <SystemOverlay />
           <TelemetryTopBar />
-          <div className="md:pl-12 pl-0 pt-8 transition-all duration-300 w-full">
+          <div className="pl-0 transition-all duration-300 w-full">
             {children}
           </div>
         </AudioProvider>

@@ -234,7 +234,7 @@ export default function TelemetryTopBar() {
             </div>
 
             {/* Bottom Accent Line */}
-            <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-red-500/50 to-transparent" />
         </div>
     );
 }

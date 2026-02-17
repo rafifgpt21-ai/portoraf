@@ -214,7 +214,7 @@ export default function About() {
 
                     <div className="flex flex-col gap-6 text-sm md:text-base leading-relaxed text-gray-400 border-l border-gray-800 pl-6 relative">
                         {/* Decorative Line Marker */}
-                        <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-interaction-red via-transparent to-transparent"></div>
+                        <div className="absolute left-0 top-0 bottom-0 w-px bg-linear-to-b from-interaction-red via-transparent to-transparent"></div>
 
                         <p>
                             <span className="text-gray-600 mr-2">01</span>

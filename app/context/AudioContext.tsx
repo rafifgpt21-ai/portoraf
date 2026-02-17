@@ -15,7 +15,7 @@ export interface Track {
 interface AudioContextType {
     currentTrack: Track | null;
     isPlaying: boolean;
-    audioRef: React.RefObject<HTMLAudioElement>;
+    audioRef: React.RefObject<HTMLAudioElement | null>;
     analyserRef: React.RefObject<AnalyserNode | null>;
     currentTime: number;
     duration: number;
@@ -42,7 +42,7 @@ export const tracks: Track[] = [
         artist: "Raf",
         genre: "Mid Tempo",
         bpm: 100,
-        duration: "3:00",
+        duration: "1:02",
         src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/bass%20heaven.mp3",
     },
 ];
