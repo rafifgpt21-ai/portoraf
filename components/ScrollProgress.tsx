@@ -26,7 +26,7 @@ export default function ScrollProgress() {
             </div>
 
             {/* The Track */}
-            <div className="w-[1px] h-full bg-gray-800 relative overflow-hidden">
+            <div className="w-px h-full bg-gray-800 relative overflow-hidden">
                 {/* The Fill */}
                 <motion.div
                     className="absolute top-0 left-0 w-full bg-white origin-top"
@@ -40,11 +40,11 @@ export default function ScrollProgress() {
             </div>
 
             {/* Decorative Markers */}
-            <div className="absolute top-0 right-full mr-1 w-1 h-[1px] bg-gray-600"></div>
-            <div className="absolute bottom-0 right-full mr-1 w-1 h-[1px] bg-gray-600"></div>
-            <div className="absolute top-1/4 right-full mr-1 w-1 h-[1px] bg-gray-800"></div>
-            <div className="absolute top-1/2 right-full mr-1 w-2 h-[1px] bg-white"></div>
-            <div className="absolute top-3/4 right-full mr-1 w-1 h-[1px] bg-gray-800"></div>
+            <div className="absolute top-0 right-full mr-1 w-1 h-px bg-gray-600"></div>
+            <div className="absolute bottom-0 right-full mr-1 w-1 h-px bg-gray-600"></div>
+            <div className="absolute top-1/4 right-full mr-1 w-1 h-px bg-gray-800"></div>
+            <div className="absolute top-1/2 right-full mr-1 w-2 h-px bg-white"></div>
+            <div className="absolute top-3/4 right-full mr-1 w-1 h-px bg-gray-800"></div>
         </div>
     );
 }

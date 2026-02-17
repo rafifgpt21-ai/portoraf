@@ -56,11 +56,23 @@ export default function TelemetryTopBar() {
         });
     }, [scrollYProgress]);
 
+    // Mouse Position Tracking
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePos({ x: e.clientX, y: e.clientY });
+        };
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, []);
+
     // Initialize metrics
     useEffect(() => {
         const initialMetrics: Record<string, number> = {};
         ABSTRACT_LABELS.forEach(label => {
-            initialMetrics[label] = Math.floor(Math.random() * 100);
+            if (label !== "QUBIT") {
+                initialMetrics[label] = Math.floor(Math.random() * 100);
+            }
         });
         setMetrics(initialMetrics);
     }, []);
@@ -71,7 +83,9 @@ export default function TelemetryTopBar() {
             // Update abstract metrics randomly
             setMetrics(prev => {
                 const newMetrics = { ...prev };
-                const keyToUpdate = ABSTRACT_LABELS[Math.floor(Math.random() * ABSTRACT_LABELS.length)];
+                // Filter out QUBIT from random updates if it's still in the list or just ensure we don't pick it
+                const validLabels = ABSTRACT_LABELS.filter(l => l !== "QUBIT");
+                const keyToUpdate = validLabels[Math.floor(Math.random() * validLabels.length)];
                 newMetrics[keyToUpdate] = Math.floor(Math.random() * 100);
                 // Inject Scroll Data occasionally
                 if (Math.random() > 0.8) {
@@ -208,15 +222,22 @@ export default function TelemetryTopBar() {
             {/* CENTER: High Density Metrics Stream */}
             <div className="flex items-center flex-1 justify-center gap-6 overflow-hidden px-4">
                 {/* Metric Group 1 */}
-                <div className="flex gap-3 border-r border-white/20 pr-3">
-                    <div className="flex flex-col items-end">
-                        <span className="text-[7px] text-gray-400 font-bold">Q-BIT</span>
-                        <span className="text-white font-bold text-shadow-sm">{metrics["QUBIT"] || 42}</span>
-                    </div>
+                <div className="flex items-center gap-3 border-r border-white/20 pr-3">
+                    <span className="text-xs font-bold text-white tracking-widest text-shadow-md tabular-nums">
+                        X:{mousePos.x.toString().padStart(4, '0')} Y:{mousePos.y.toString().padStart(4, '0')}
+                    </span>
                     <div className="w-[40px] h-[16px] border border-gray-600 relative bg-gray-900">
                         <div
-                            className="absolute bottom-0 left-0 bg-gray-200 w-full transition-all duration-100"
-                            style={{ height: `${metrics["QUBIT"]}%` }}
+                            className="absolute bottom-0 left-0 bg-gray-200 w-full transition-all duration-75"
+                            style={{
+                                height: `${(mousePos.x / (typeof window !== 'undefined' ? window.innerWidth : 1920)) * 100}%`
+                            }}
+                        />
+                        <div
+                            className="absolute bottom-0 left-0 bg-white/50 w-full transition-all duration-75 mix-blend-overlay"
+                            style={{
+                                height: `${(mousePos.y / (typeof window !== 'undefined' ? window.innerHeight : 1080)) * 100}%`
+                            }}
                         />
                     </div>
                 </div>

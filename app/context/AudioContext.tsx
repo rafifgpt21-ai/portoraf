@@ -101,15 +101,6 @@ export const tracks: Track[] = [
     },
     {
         id: 9,
-        title: "Polaris",
-        artist: "Raf",
-        genre: "Orchestral",
-        bpm: 110, // Estimated/Placeholder
-        duration: "3:10", // Placeholder
-        src: "https://xycf6udmoabgvnxm.public.blob.vercel-storage.com/day%204.mp3",
-    },
-    {
-        id: 10,
         title: "Aurora",
         artist: "Raf",
         genre: "Mid Tempo & Trap",

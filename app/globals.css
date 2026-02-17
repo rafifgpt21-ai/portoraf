@@ -43,6 +43,9 @@ body {
   font-family: var(--font-jetbrains), monospace;
 }
 
+a,
+button {}
+
 h1,
 h2,
 h3,

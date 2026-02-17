@@ -123,7 +123,7 @@ export default function About() {
                     </div>
 
                     {/* Interactive Modules Grid */}
-                    <div className="mt-2 border-t border-gray-800 pt-4 grow flex flex-col justify-end">
+                    <div className="mt-8 border-t border-gray-800 pt-4 flex flex-col gap-4">
                         <div className="flex justify-between items-end mb-2">
                             <h3 className="text-xs font-mono text-gray-400 uppercase tracking-widest">SKILL_MODULE</h3>
                             <div className="flex gap-2 items-center">

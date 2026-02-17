@@ -4,9 +4,12 @@ import "./globals.css";
 import Background from "@/components/Background";
 import SystemOverlay from "@/components/SystemOverlay";
 import TelemetryTopBar from "@/components/TelemetryTopBar";
+
 import { AudioProvider } from "@/app/context/AudioContext";
 
 import CyberBackground from "@/components/CyberBackground";
+import InteractiveBackground from "@/components/InteractiveBackground";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -44,10 +47,13 @@ export default function RootLayout({
       <body
         className={`${oswald.variable} ${jetbrainsMono.variable} ${orbitron.variable} ${archivoBlack.variable} antialiased bg-cyber-black text-white selection:bg-interaction-red selection:text-black overflow-x-hidden`}
       >
+
         <div className="fixed inset-0 pointer-events-none z-50 bg-[url('/noise.svg')] opacity-[0.05] mix-blend-overlay"></div>
         <AudioProvider>
+          <SmoothScroll />
           <Background />
           <CyberBackground />
+          <InteractiveBackground />
 
           <SystemOverlay />
           <TelemetryTopBar />

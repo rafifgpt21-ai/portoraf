@@ -35,8 +35,8 @@ export default function CyberBackground() {
             />
 
             {/* Code Rain / Data Stream placeholder - Simplified for performance */}
-            <div className="absolute right-10 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent opacity-20"></div>
-            <div className="absolute left-20 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent opacity-10"></div>
+            <div className="absolute right-10 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-white/10 to-transparent opacity-20"></div>
+            <div className="absolute left-20 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-white/5 to-transparent opacity-10"></div>
         </div>
     );
 }

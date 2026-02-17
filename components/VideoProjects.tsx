@@ -69,33 +69,41 @@ export default function VideoProjects() {
                             <div className="absolute bottom-0 right-0 w-16 h-16 border-b border-r border-gray-800" />
 
                             {/* Main Interactive Area */}
-                            <div className="relative z-10 flex flex-col items-center gap-6">
+                            <div className="relative z-10 flex flex-col items-center gap-8">
                                 <div className="font-mono text-gray-500 text-sm tracking-[0.25em] text-center animate-pulse">
                                     // ENCRYPTED_SIGNAL_DETECTED
                                 </div>
 
                                 <button
                                     onClick={() => setIsVisible(true)}
-                                    className="group relative px-12 py-6 bg-black border border-white text-white font-mono text-xl tracking-wider overflow-hidden hover:border-interaction-red hover:text-interaction-red transition-all duration-300 cursor-pointer"
+                                    className="group relative px-16 py-8 bg-black/80 border border-white/30 text-white font-mono text-xl tracking-wider overflow-hidden hover:border-interaction-red hover:text-interaction-red transition-all duration-500 cursor-pointer shadow-[0_0_20px_-5px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_-10px_rgba(255,0,0,0.5)] backdrop-blur-sm"
                                 >
-                                    {/* Hover Fill Effect */}
-                                    <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                                    {/* Ambient Glow Animation (Default) */}
+                                    <div className="absolute inset-0 bg-white/5 animate-pulse" />
 
-                                    <span className="relative z-10 flex items-center gap-3 group-hover:gap-4 transition-all duration-300">
-                                        <Terminal className="w-5 h-5" />
-                                        INITIALIZE_RECAP
+                                    {/* Hover Fill Effect (Glitchy Red) */}
+                                    <div className="absolute inset-0 bg-interaction-red/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+
+                                    {/* Button Content */}
+                                    <span className="relative z-10 flex items-center gap-4 group-hover:gap-6 transition-all duration-300">
+                                        <Terminal className="w-6 h-6 animate-pulse" />
+                                        <span>INITIALIZE_RECAP</span>
+                                        <span className="animate-pulse text-interaction-red">_</span>
                                     </span>
 
                                     {/* Corner Accents on Button */}
-                                    <div className="absolute top-0 left-0 w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                    <div className="absolute bottom-0 right-0 w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-current opacity-50 group-hover:opacity-100 transition-all duration-300" />
+                                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-current opacity-50 group-hover:opacity-100 transition-all duration-300" />
+                                    <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-current opacity-0 group-hover:opacity-100 transition-all duration-300 delay-75" />
+                                    <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-current opacity-0 group-hover:opacity-100 transition-all duration-300 delay-75" />
 
-                                    {/* Glitch Overlay */}
-                                    <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 delay-75 mix-blend-screen" />
+                                    {/* Scanline / Glitch Overlay */}
+                                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
                                 </button>
 
-                                <div className="text-[10px] uppercase tracking-widest text-gray-600 font-mono group hover:text-gray-400 transition-colors cursor-default">
-                                    Awaiting Decryption Key...
+                                <div className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono group hover:text-gray-300 transition-colors cursor-default flex flex-col items-center gap-2">
+                                    <span>Awaiting Decryption Key...</span>
+                                    <span className="h-px w-0 group-hover:w-24 bg-interaction-red transition-all duration-500 delay-100" />
                                 </div>
                             </div>
                         </motion.div>
