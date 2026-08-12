@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { Play, Pause, Music, Disc, Activity, Square, X } from "lucide-react";
+import { useRef, useEffect, useCallback } from "react";
+import { Play, Pause, Activity, Square } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAudio, tracks } from "@/app/context/AudioContext";
 
@@ -21,7 +21,7 @@ export default function MusicProjects() {
     const animationRef = useRef<number | null>(null);
     const progressBarRef = useRef<HTMLDivElement | null>(null);
 
-    const drawVisualizer = () => {
+    const drawVisualizer = useCallback(() => {
         if (!analyserRef.current || !canvasRef.current) return;
 
         const bufferLength = analyserRef.current.frequencyBinCount;
@@ -86,14 +86,12 @@ export default function MusicProjects() {
                 const endBin = Math.floor((endFreq / nyquist) * binCount);
 
                 // Calculate average/max energy in this bin range
-                let sum = 0;
                 let maxVal = 0;
                 const actualStart = Math.max(0, startBin);
                 const actualEnd = Math.min(binCount - 1, Math.max(actualStart + 1, endBin));
 
                 for (let j = actualStart; j < actualEnd; j++) {
                     const val = dataArray[j];
-                    sum += val;
                     if (val > maxVal) maxVal = val;
                 }
 
@@ -161,7 +159,7 @@ export default function MusicProjects() {
         };
 
         draw();
-    };
+    }, [analyserRef]);
 
     // Trigger visualizer when playing starts
     useEffect(() => {
@@ -177,7 +175,7 @@ export default function MusicProjects() {
                 cancelAnimationFrame(animationRef.current);
             }
         }
-    }, [isPlaying, analyserRef]);
+    }, [isPlaying, drawVisualizer]);
 
     const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!progressBarRef.current || !duration) return;
@@ -199,23 +197,23 @@ export default function MusicProjects() {
     const activeTrack = currentTrack;
 
     return (
-        <section className="h-screen min-h-[800px] flex flex-col pt-16 md:pt-24 pb-8 px-4 md:px-12 w-full border-t border-gray-900 bg-black relative overflow-hidden">
+        <section id="audio" className="min-h-screen lg:h-screen lg:min-h-[800px] flex flex-col py-24 md:pt-28 md:pb-10 px-4 sm:px-6 md:px-12 w-full border-t border-white/10 bg-black relative overflow-visible lg:overflow-hidden">
             {/* Section Header */}
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="flex-none flex items-center gap-4 mb-2 md:mb-8"
+                className="flex-none flex items-center gap-3 md:gap-4 mb-8 md:mb-10"
             >
-                <div className="w-4 h-4 bg-white" />
-                <h2 className="text-4xl md:text-8xl font-bold text-white uppercase tracking-tighter flex flex-col md:flex-row items-baseline gap-4">
+                <div className="w-3 h-3 md:w-4 md:h-4 bg-white shrink-0" />
+                <h2 className="text-[clamp(2rem,7vw,6rem)] leading-none font-bold text-white uppercase tracking-tighter flex flex-col md:flex-row items-baseline gap-2 md:gap-4 whitespace-nowrap">
                     [Sonic_Archive]
                     <span className="text-sm md:text-lg text-gray-500 opacity-50 font-normal tracking-normal">音のアーカイブ</span>
                 </h2>
             </motion.div>
 
-            <div className="flex-1 flex flex-col lg:flex-row gap-4 lg:gap-8 min-h-0">
+            <div className="flex-none lg:flex-1 flex flex-col lg:flex-row gap-8 lg:gap-8 min-h-0">
                 {/* Visualizer & Now Playing Area */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -224,7 +222,7 @@ export default function MusicProjects() {
                     viewport={{ once: true }}
                     className="flex-none lg:w-[40%] flex flex-col gap-2 lg:gap-4"
                 >
-                    <div className="relative border border-gray-800 bg-gray-900/50 p-2 h-32 md:h-64 lg:h-96 overflow-hidden group">
+                    <div className="relative border border-white/15 bg-gray-900/50 p-2 h-40 sm:h-52 md:h-64 lg:h-96 overflow-hidden group">
                         {/* CRT Overlay Effect */}
                         <div className="absolute inset-0 z-10 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-size-[100%_2px,3px_100%] opacity-20" />
 
@@ -264,9 +262,9 @@ export default function MusicProjects() {
                                 <h3 className="text-lg font-bold text-white uppercase leading-none">{activeTrack.title}</h3>
                                 <div className="flex items-center gap-2 text-gray-400 font-mono text-[10px] mt-1">
                                     <span className="text-white bg-gray-900 px-1">ARTIST: {activeTrack.artist}</span>
-                                    <span>//</span>
+                                    <span>{"//"}</span>
                                     <span>BPM: {activeTrack.bpm}</span>
-                                    <span>//</span>
+                                    <span>{"//"}</span>
                                     <span>{activeTrack.genre}</span>
                                 </div>
 
@@ -318,9 +316,9 @@ export default function MusicProjects() {
                     </AnimatePresence>
 
                     {/* Produced by Raf - Footer */}
-                    <div className="mt-4 text-left pointer-events-none">
+                    <div className="mt-3 text-left pointer-events-none">
                         <p className="text-gray-500 font-mono text-xs uppercase tracking-widest opacity-60">
-                            ALL TRACKS PRODUCED BY RAF <span className="text-red-600 animate-pulse">//</span> 全ての曲は RAF によって制作されました
+                            ALL TRACKS PRODUCED BY RAF <span className="text-red-600 animate-pulse">{"//"}</span> 全ての曲は RAF によって制作されました
                         </p>
                         <p className="text-[10px] text-gray-700 font-mono mt-1">
                             SONIC_ARCHIVE_V1.0
@@ -329,16 +327,17 @@ export default function MusicProjects() {
                 </motion.div>
 
                 {/* Track List */}
-                <div className="flex-1 flex flex-col gap-2   overflow-y-auto pr-2 pb-12">
+                <div className="flex-1 flex flex-col gap-2 overflow-visible lg:overflow-y-auto lg:pr-2 lg:pb-12">
                     {tracks.map((track, i) => (
-                        <motion.div
+                        <motion.button
+                            type="button"
                             key={track.id}
                             initial={{ opacity: 0, x: 20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.2 + (i * 0.1) }}
                             viewport={{ once: true }}
                             onClick={() => togglePlay(track)}
-                            className={`group flex-none relative p-3 md:p-4 border transition-all cursor-pointer overflow-hidden
+                            className={`group flex-none relative w-full p-3 md:p-4 border text-left transition-all cursor-pointer overflow-hidden
                                 ${currentTrack?.id === track.id
                                     ? "border-white bg-gray-900/30"
                                     : "border-gray-800 bg-black hover:border-gray-600"
@@ -347,8 +346,8 @@ export default function MusicProjects() {
                             {/* Hover Fill */}
                             <div className="absolute inset-0 bg-white/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
 
-                            <div className="relative z-10 flex items-center justify-between">
-                                <div className="flex items-center gap-3 md:gap-6">
+                            <div className="relative z-10 flex items-center justify-between gap-3">
+                                <div className="flex min-w-0 items-center gap-3 md:gap-6">
                                     <div className={`w-8 h-8 flex items-center justify-center border font-mono text-xs
                                         ${currentTrack?.id === track.id ? "border-white text-white" : "border-gray-700 text-gray-500"}
                                     `}>
@@ -363,11 +362,11 @@ export default function MusicProjects() {
                                         )}
                                     </div>
 
-                                    <div>
+                                    <div className="min-w-0">
                                         <h4 className={`text-base md:text-lg font-bold uppercase transition-colors ${currentTrack?.id === track.id ? "text-white" : "text-gray-400 group-hover:text-white"}`}>
                                             {track.title}
                                         </h4>
-                                        <div className="flex gap-2 text-xs font-mono text-gray-600">
+                                        <div className="flex flex-wrap gap-x-2 text-[10px] sm:text-xs font-mono text-gray-600">
                                             <span>{track.artist}</span>
                                             <span>::</span>
                                             <span>{track.genre}</span>
@@ -375,11 +374,11 @@ export default function MusicProjects() {
                                     </div>
                                 </div>
 
-                                <div className="text-right font-mono text-sm text-gray-500 group-hover:text-white transition-colors">
+                                <div className="shrink-0 text-right font-mono text-xs sm:text-sm text-gray-500 group-hover:text-white transition-colors">
                                     {track.duration}
                                 </div>
                             </div>
-                        </motion.div>
+                        </motion.button>
                     ))}
                 </div>
             </div>

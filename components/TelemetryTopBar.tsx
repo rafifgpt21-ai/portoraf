@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Activity, Zap, Radio, Database, Cpu, Wifi } from "lucide-react";
+import { Activity, Wifi } from "lucide-react";
 
 // Abstract/Sci-fi terms that don't necessarily avoid meaning but sound "tech"
 const ABSTRACT_LABELS = [
@@ -36,13 +36,19 @@ import { useScroll, useSpring, motion } from "framer-motion";
 
 export default function TelemetryTopBar() {
     const { currentTrack, isPlaying, analyserRef } = useAudio();
-    const { scrollY, scrollYProgress } = useScroll();
+    const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
         stiffness: 100,
         damping: 30,
         restDelta: 0.001
     });
-    const [metrics, setMetrics] = useState<Record<string, number>>({});
+    const [metrics, setMetrics] = useState<Record<string, number>>(() => {
+        const initialMetrics: Record<string, number> = {};
+        ABSTRACT_LABELS.forEach((label, index) => {
+            if (label !== "QUBIT") initialMetrics[label] = ((index + 1) * 17) % 100;
+        });
+        return initialMetrics;
+    });
     const [log, setLog] = useState("");
     const [jpText, setJpText] = useState(JAPANESE_TEXTS[0]);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -64,17 +70,6 @@ export default function TelemetryTopBar() {
         };
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, []);
-
-    // Initialize metrics
-    useEffect(() => {
-        const initialMetrics: Record<string, number> = {};
-        ABSTRACT_LABELS.forEach(label => {
-            if (label !== "QUBIT") {
-                initialMetrics[label] = Math.floor(Math.random() * 100);
-            }
-        });
-        setMetrics(initialMetrics);
     }, []);
 
     // Animation Loop
@@ -161,9 +156,6 @@ export default function TelemetryTopBar() {
             let x = 0;
 
             for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0; // 128 is zero/center
-                const y = (v * height) / 2; // Center is height/2 ? No.
-
                 // dataArray value: 0 (bottom) -> 128 (middle) -> 255 (top)
                 // y needs to map to canvas.height.
                 // Value 128 should be at height/2.

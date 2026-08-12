@@ -2,6 +2,52 @@
 
 import { useEffect, useRef } from "react";
 
+class Particle {
+    x: number;
+    y: number;
+    size: number;
+    vx: number;
+    vy: number;
+    color: string;
+
+    constructor(canvas: HTMLCanvasElement) {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
+        this.color = Math.random() > 0.98
+            ? "rgba(255, 0, 0, 0.8)"
+            : `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.1})`;
+    }
+
+    update(canvas: HTMLCanvasElement, mouseX: number, mouseY: number) {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const forceDistance = 150;
+
+        if (distance > 0 && distance < forceDistance) {
+            const force = (forceDistance - distance) / forceDistance;
+            this.x -= (dx / distance) * force * 2;
+            this.y -= (dy / distance) * force * 2;
+        }
+
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+    }
+}
+
 export default function InteractiveBackground() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -23,79 +69,11 @@ export default function InteractiveBackground() {
             initParticles();
         };
 
-        class Particle {
-            x: number;
-            y: number;
-            size: number;
-            vx: number;
-            vy: number;
-            color: string;
-            originalX: number;
-            originalY: number;
-
-            constructor() {
-                this.x = Math.random() * canvas!.width;
-                this.y = Math.random() * canvas!.height;
-                this.size = Math.random() * 2 + 1; // 1-3px size
-                this.vx = (Math.random() - 0.5) * 0.2; // Slow movement
-                this.vy = (Math.random() - 0.5) * 0.2;
-                this.originalX = this.x;
-                this.originalY = this.y;
-
-                // Randomly assign colors: mostly grey/white, rare red accents
-                const rand = Math.random();
-                if (rand > 0.98) {
-                    this.color = "rgba(255, 0, 0, 0.8)"; // Red accent
-                } else {
-                    this.color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.1})`; // Increased brightness
-                }
-            }
-
-            update() {
-                // Base movement
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Mouse interaction (Antigravity-ish / Repulsion)
-                const dx = mouseX - this.x;
-                const dy = mouseY - this.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const forceDistance = 150;
-
-                if (distance < forceDistance) {
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const force = (forceDistance - distance) / forceDistance;
-
-                    // Push away from mouse
-                    const directionX = forceDirectionX * force * 2;
-                    const directionY = forceDirectionY * force * 2;
-
-                    this.x -= directionX;
-                    this.y -= directionY;
-                }
-
-                // Wrap around screen
-                if (this.x < 0) this.x = canvas!.width;
-                if (this.x > canvas!.width) this.x = 0;
-                if (this.y < 0) this.y = canvas!.height;
-                if (this.y > canvas!.height) this.y = 0;
-            }
-
-            draw() {
-                if (!ctx) return;
-                ctx.fillStyle = this.color;
-
-                // Draw square pixels for cyber feel, not circles
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-            }
-        }
-
         const initParticles = () => {
             particles = [];
             const particleCount = (window.innerWidth * window.innerHeight) / 15000; // Density
             for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
+                particles.push(new Particle(canvas));
             }
         };
 
@@ -104,8 +82,8 @@ export default function InteractiveBackground() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach((particle) => {
-                particle.update();
-                particle.draw();
+                particle.update(canvas, mouseX, mouseY);
+                particle.draw(ctx);
             });
 
             animationFrameId = requestAnimationFrame(animate);

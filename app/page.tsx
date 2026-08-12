@@ -6,16 +6,14 @@ import Terminal from "@/components/Terminal";
 
 export default function Home() {
   return (
-    <main className="min-h-screen w-full relative overflow-hidden">
+    <main id="top" className="min-h-screen w-full relative overflow-hidden">
       <Hero />
       <div id="about">
         <About />
       </div>
-      <div id="projects">
-        <VideoProjects />
-        <MusicProjects />
-        <Terminal />
-      </div>
+      <VideoProjects />
+      <MusicProjects />
+      <Terminal />
     </main>
   );
 }

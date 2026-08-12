@@ -10,6 +10,7 @@ import { AudioProvider } from "@/app/context/AudioContext";
 import CyberBackground from "@/components/CyberBackground";
 import InteractiveBackground from "@/components/InteractiveBackground";
 import SmoothScroll from "@/components/SmoothScroll";
+import PortfolioNav from "@/components/PortfolioNav";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -57,6 +58,7 @@ export default function RootLayout({
 
           <SystemOverlay />
           <TelemetryTopBar />
+          <PortfolioNav />
           <div className="pl-0 transition-all duration-300 w-full">
             {children}
           </div>

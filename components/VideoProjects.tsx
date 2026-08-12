@@ -2,27 +2,27 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Play, Terminal, X } from "lucide-react";
+import { Terminal, X } from "lucide-react";
 
 export default function VideoProjects() {
     const [isHovered, setIsHovered] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
     return (
-        <section className="py-20 px-4 md:px-12 w-full border-t border-gray-900">
+        <section id="reel" className="py-24 md:py-28 px-4 sm:px-6 md:px-12 w-full border-t border-white/10">
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="flex items-center gap-4 mb-12"
+                className="flex items-center gap-3 md:gap-4 mb-8 md:mb-12"
             >
-                <div className="w-4 h-4 bg-white" />
-                <h2 className="text-4xl md:text-8xl font-bold text-white uppercase tracking-tighter flex flex-col md:flex-row items-baseline gap-4">
+                <div className="w-3 h-3 md:w-4 md:h-4 bg-white shrink-0" />
+                <h2 className="text-[clamp(2rem,7vw,6rem)] leading-none font-bold text-white uppercase tracking-tighter flex flex-col md:flex-row items-baseline gap-2 md:gap-4 whitespace-nowrap">
                     [Project_Recap]
                     <span className="text-sm md:text-lg text-gray-500 opacity-50 font-normal tracking-normal">プロジェクト・リカプス</span>
                 </h2>
-                <div className="h-1 grow bg-gray-800 ml-4 relative overflow-hidden">
+                <div className="h-px md:h-1 grow bg-gray-800 ml-1 md:ml-4 relative overflow-hidden">
                     <div className="absolute top-0 left-0 h-full w-1/3 bg-white animate-glitch opacity-50"></div>
                 </div>
             </motion.div>
@@ -41,7 +41,7 @@ export default function VideoProjects() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="relative min-h-[400px] w-full flex flex-col items-center justify-center gap-8 border border-gray-900 bg-black/50 overflow-hidden"
+                        className="relative min-h-[380px] md:min-h-[500px] w-full flex flex-col items-center justify-center gap-6 md:gap-8 border border-white/15 bg-black/55 overflow-hidden"
                         >
                             {/* Animated Background Grid */}
                             <div className="absolute inset-0 z-0 opacity-20 pointer-events-none"
@@ -71,12 +71,21 @@ export default function VideoProjects() {
                             {/* Main Interactive Area */}
                             <div className="relative z-10 flex flex-col items-center gap-8">
                                 <div className="font-mono text-gray-500 text-sm tracking-[0.25em] text-center animate-pulse">
-                                    // ENCRYPTED_SIGNAL_DETECTED
+                                    {"// ENCRYPTED_SIGNAL_DETECTED"}
+                                </div>
+
+                                <div className="max-w-xl px-6 text-center">
+                                    <p className="text-balance text-lg md:text-2xl font-bold uppercase text-white">
+                                        Selected multimedia production reel
+                                    </p>
+                                    <p className="mt-2 font-mono text-[10px] md:text-xs uppercase leading-relaxed tracking-widest text-gray-500">
+                                        Direction // Camera // Edit // Color // Sound
+                                    </p>
                                 </div>
 
                                 <button
                                     onClick={() => setIsVisible(true)}
-                                    className="group relative px-16 py-8 bg-black/80 border border-white/30 text-white font-mono text-xl tracking-wider overflow-hidden hover:border-interaction-red hover:text-interaction-red transition-all duration-500 cursor-pointer shadow-[0_0_20px_-5px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_-10px_rgba(255,0,0,0.5)] backdrop-blur-sm"
+                                    className="group relative px-6 sm:px-12 md:px-16 py-5 md:py-7 bg-black/80 border border-white/30 text-white font-mono text-sm sm:text-base md:text-xl tracking-wider overflow-hidden hover:border-interaction-red hover:text-interaction-red transition-all duration-500 cursor-pointer shadow-[0_0_20px_-5px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_-10px_rgba(255,0,0,0.5)] backdrop-blur-sm"
                                 >
                                     {/* Ambient Glow Animation (Default) */}
                                     <div className="absolute inset-0 bg-white/5 animate-pulse" />
@@ -85,8 +94,8 @@ export default function VideoProjects() {
                                     <div className="absolute inset-0 bg-interaction-red/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
 
                                     {/* Button Content */}
-                                    <span className="relative z-10 flex items-center gap-4 group-hover:gap-6 transition-all duration-300">
-                                        <Terminal className="w-6 h-6 animate-pulse" />
+                                    <span className="relative z-10 flex items-center gap-3 md:gap-4 group-hover:gap-6 transition-all duration-300">
+                                        <Terminal className="w-5 h-5 md:w-6 md:h-6 animate-pulse" />
                                         <span>INITIALIZE_RECAP</span>
                                         <span className="animate-pulse text-interaction-red">_</span>
                                     </span>

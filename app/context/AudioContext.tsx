@@ -152,8 +152,11 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
     const setupAudioContext = () => {
         if (!audioContextRef.current && audioRef.current) {
-            const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-            audioContextRef.current = new AudioContext();
+            const AudioContextConstructor = window.AudioContext || (window as Window & {
+                webkitAudioContext?: typeof AudioContext;
+            }).webkitAudioContext;
+            if (!AudioContextConstructor) return;
+            audioContextRef.current = new AudioContextConstructor();
             analyserRef.current = audioContextRef.current.createAnalyser();
             // Connect audio element source to analyser
             if (!sourceRef.current) {

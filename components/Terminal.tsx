@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Terminal as TerminalIcon, Copy, ExternalLink, Mail, Phone, Check, ArrowRight } from "lucide-react";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Helper to generate random hex string
 const generateHex = (length: number) => {
@@ -27,7 +27,7 @@ const ScrambleText = ({ text, className, hover = true }: { text: string, classNa
         if (isHovered) {
             let iteration = 0;
             interval = setInterval(() => {
-                setDisplayedText(prev =>
+                setDisplayedText(
                     text.split("").map((letter, index) => {
                         if (index < iteration) {
                             return text[index];
@@ -42,8 +42,6 @@ const ScrambleText = ({ text, className, hover = true }: { text: string, classNa
 
                 iteration += 1 / 3;
             }, 30);
-        } else {
-            setDisplayedText(text);
         }
         return () => clearInterval(interval);
     }, [isHovered, text, hover]);
@@ -52,7 +50,10 @@ const ScrambleText = ({ text, className, hover = true }: { text: string, classNa
         <span
             className={`inline-block ${className} ${hover ? 'cursor-pointer' : ''}`}
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseLeave={() => {
+                setIsHovered(false);
+                setDisplayedText(text);
+            }}
         >
             {displayedText}
         </span>
@@ -77,7 +78,8 @@ const TypingEffect = ({ text, delay = 0, speed = 30 }: { text: string, delay?: n
         let i = 0;
         const interval = setInterval(() => {
             if (i < text.length) {
-                setDisplayedText((prev) => prev + text.charAt(i));
+                const nextCharacter = text.charAt(i);
+                setDisplayedText((prev) => prev + nextCharacter);
                 i++;
             } else {
                 clearInterval(interval);
@@ -135,10 +137,9 @@ interface ContactProtocolProps {
     actionLink: string;
     copyValue: string;
     icon: React.ReactNode;
-    color: string;
 }
 
-const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon, color }: ContactProtocolProps) => {
+const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon }: ContactProtocolProps) => {
     const [copied, setCopied] = useState(false);
     const [isHovered, setIsHovered] = useState(false); // Track hover state for lock-on effect
 
@@ -220,7 +221,7 @@ const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon, 
             {/* Removed in favor of bracket effect or kept subtle? Keeping for visual weight but reducing distinctness if brackets take focus. */}
             <div className={`absolute left-0 top-0 bottom-0 w-1 bg-interaction-red scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-bottom`} />
 
-            <div className="p-4 md:p-6 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between relative z-10">
+            <div className="p-4 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center justify-between relative z-10">
                 {/* Left: Info */}
                 <div className="flex gap-4 items-center">
                     <div className={`p-3 bg-transparent border border-white/20 text-gray-400 group-hover:text-interaction-red group-hover:border-interaction-red transition-colors duration-300`}>
@@ -231,7 +232,7 @@ const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon, 
                             <span className={`text-[10px] font-mono uppercase tracking-widest text-gray-500 group-hover:text-interaction-red font-bold transition-colors`}>{label}</span>
                             <span className="text-[10px] text-white/40 font-mono">[{subLabel}]</span>
                         </div>
-                        <h3 className="text-lg md:text-xl font-mono text-white group-hover:text-interaction-red transition-colors duration-300 font-bold">
+                    <h3 className="text-sm sm:text-lg md:text-xl font-mono text-white break-all group-hover:text-interaction-red transition-colors duration-300 font-bold">
                             <ScrambleText text={value} hover={isHovered} />
                         </h3>
                     </div>
@@ -287,13 +288,13 @@ const ContactProtocol = ({ label, subLabel, value, actionLink, copyValue, icon, 
 
 export default function Terminal() {
     return (
-        <section className="min-h-screen w-screen flex flex-col justify-center px-8 md:px-16 relative bg-black text-white overflow-hidden">
+        <section id="contact" className="min-h-screen w-full flex flex-col justify-start md:justify-center px-4 sm:px-6 md:px-16 py-24 md:py-28 relative bg-black text-white overflow-hidden border-t border-white/10">
 
             {/* Header */}
-            <div className="flex flex-col md:flex-row items-baseline gap-4 mb-12 border-b border-white/20 pb-4 w-full">
+            <div className="flex flex-col md:flex-row items-start md:items-baseline gap-4 mb-10 md:mb-12 border-b border-white/20 pb-4 w-full">
                 <div className="flex items-center gap-3">
                     <TerminalIcon className="text-white w-6 h-6" />
-                    <h2 className="text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter cursor-crosshair hover:text-interaction-red transition-colors duration-300">
+                    <h2 className="text-[clamp(1.65rem,6.5vw,4.5rem)] leading-none font-bold text-white uppercase tracking-tighter cursor-crosshair hover:text-interaction-red transition-colors duration-300 whitespace-nowrap">
                         <GlitchText text="[Connection_Protocol]" />
                     </h2>
                 </div>
@@ -345,7 +346,6 @@ export default function Terminal() {
                         copyValue="+628559895967"
                         actionLink="https://wa.me/628559895967"
                         icon={<Phone size={20} />}
-                        color="white"
                     />
 
                     <ContactProtocol
@@ -355,7 +355,6 @@ export default function Terminal() {
                         copyValue="rafifsidqi2138@gmail.com"
                         actionLink="mailto:rafifsidqi2138@gmail.com"
                         icon={<Mail size={20} />}
-                        color="white"
                     />
 
                     <ContactProtocol
@@ -365,7 +364,6 @@ export default function Terminal() {
                         copyValue="https://www.linkedin.com/in/rafifsidqi"
                         actionLink="https://www.linkedin.com/in/rafifsidqi"
                         icon={<ExternalLink size={20} />}
-                        color="white"
                     />
                 </div>
             </div>
