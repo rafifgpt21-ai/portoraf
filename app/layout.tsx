@@ -1,29 +1,18 @@
 import type { Metadata } from "next";
-import { Oswald, JetBrains_Mono, Orbitron, Archivo_Black } from "next/font/google";
+import { Archivo_Black, IBM_Plex_Mono, Oswald } from "next/font/google";
+import "lenis/dist/lenis.css";
 import "./globals.css";
-import Background from "@/components/Background";
-import SystemOverlay from "@/components/SystemOverlay";
-import TelemetryTopBar from "@/components/TelemetryTopBar";
-
 import { AudioProvider } from "@/app/context/AudioContext";
-
-import CyberBackground from "@/components/CyberBackground";
-import InteractiveBackground from "@/components/InteractiveBackground";
 import SmoothScroll from "@/components/SmoothScroll";
-import PortfolioNav from "@/components/PortfolioNav";
 
 const oswald = Oswald({
   variable: "--font-oswald",
   subsets: ["latin"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-});
-
-const orbitron = Orbitron({
-  variable: "--font-orbitron",
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -34,8 +23,8 @@ const archivoBlack = Archivo_Black({
 });
 
 export const metadata: Metadata = {
-  title: "Rafif Sidqi M. | Systems Engineer",
-  description: "Multimedia Producer | Systems Engineer | Music Tech Enthusiast",
+  title: "Rafif Sidqi — Creative Technologist",
+  description: "Portfolio of Rafif Sidqi Mokobombang — multimedia producer, systems engineer, and music technologist in Jakarta.",
 };
 
 export default function RootLayout({
@@ -44,24 +33,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var saved=localStorage.getItem('portfolio-theme');var theme=saved||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=theme;}catch(e){document.documentElement.dataset.theme='light';}})();`,
+          }}
+        />
+      </head>
       <body
-        className={`${oswald.variable} ${jetbrainsMono.variable} ${orbitron.variable} ${archivoBlack.variable} antialiased bg-cyber-black text-white selection:bg-interaction-red selection:text-black overflow-x-hidden`}
+        className={`${oswald.variable} ${plexMono.variable} ${archivoBlack.variable}`}
       >
-
-        <div className="fixed inset-0 pointer-events-none z-50 bg-[url('/noise.svg')] opacity-[0.05] mix-blend-overlay"></div>
         <AudioProvider>
           <SmoothScroll />
-          <Background />
-          <CyberBackground />
-          <InteractiveBackground />
-
-          <SystemOverlay />
-          <TelemetryTopBar />
-          <PortfolioNav />
-          <div className="pl-0 transition-all duration-300 w-full">
-            {children}
-          </div>
+          {children}
         </AudioProvider>
       </body>
     </html>

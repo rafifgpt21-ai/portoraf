@@ -1,168 +1,110 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { Terminal, X } from "lucide-react";
+import { Play, X } from "lucide-react";
+import BrutalistSection from "@/components/BrutalistSection";
+import { shutterTransition, useHydratedReducedMotion } from "@/components/motion";
 
 export default function VideoProjects() {
-    const [isHovered, setIsHovered] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
+    const [open, setOpen] = useState(false);
+    const reduceMotion = useHydratedReducedMotion();
+    const shutter = reduceMotion ? { duration: 0 } : shutterTransition;
 
     return (
-        <section id="reel" className="py-24 md:py-28 px-4 sm:px-6 md:px-12 w-full border-t border-white/10">
-            <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="flex items-center gap-3 md:gap-4 mb-8 md:mb-12"
-            >
-                <div className="w-3 h-3 md:w-4 md:h-4 bg-white shrink-0" />
-                <h2 className="text-[clamp(2rem,7vw,6rem)] leading-none font-bold text-white uppercase tracking-tighter flex flex-col md:flex-row items-baseline gap-2 md:gap-4 whitespace-nowrap">
-                    [Project_Recap]
-                    <span className="text-sm md:text-lg text-gray-500 opacity-50 font-normal tracking-normal">プロジェクト・リカプス</span>
-                </h2>
-                <div className="h-px md:h-1 grow bg-gray-800 ml-1 md:ml-4 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 h-full w-1/3 bg-white animate-glitch opacity-50"></div>
-                </div>
-            </motion.div>
+        <BrutalistSection id="reel" index="02" title="SELECTED REEL" subtitle="プロジェクト・リカプス / MOTION_ARCHIVE" tone="signal">
+            <div className="grid border-b-[3px] border-ink lg:grid-cols-[20rem_1fr]">
+                <aside className="grid grid-cols-2 border-b-[3px] border-ink lg:grid-cols-1 lg:border-b-0 lg:border-r-[3px]">
+                    {[
+                        ["YEAR", "2022—2026"],
+                        ["ROLE", "MULTIMEDIA PRODUCER"],
+                        ["DISCIPLINES", "DIRECTION / CAMERA / EDIT / COLOR / SOUND"],
+                        ["SIGNAL", "YOUTUBE / 16:9 / STEREO"],
+                    ].map(([label, value], index) => (
+                        <div key={label} className={`min-h-28 p-4 md:p-6 ${index % 2 === 0 ? "border-r-[3px] lg:border-r-0" : ""} ${index < 3 ? "border-b-[3px] border-ink" : ""}`}>
+                            <span className="font-mono text-[9px] font-black uppercase tracking-[0.16em] text-ink/45">{label}</span>
+                            <strong className="mt-4 block font-oswald text-xl uppercase leading-none md:text-2xl">{value}</strong>
+                        </div>
+                    ))}
+                </aside>
 
-            <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                whileInView={{ height: "auto", opacity: 1 }}
-                transition={{ duration: 1, ease: "anticipate" }}
-                viewport={{ once: true, margin: "-100px" }}
-                className="relative w-full overflow-hidden min-h-[200px] flex items-center justify-center"
-            >
-                <AnimatePresence mode="wait">
-                    {!isVisible ? (
-                        <motion.div
-                            key="placeholder"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                        className="relative min-h-[380px] md:min-h-[500px] w-full flex flex-col items-center justify-center gap-6 md:gap-8 border border-white/15 bg-black/55 overflow-hidden"
-                        >
-                            {/* Animated Background Grid */}
-                            <div className="absolute inset-0 z-0 opacity-20 pointer-events-none"
-                                style={{
-                                    backgroundImage: `linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)`,
-                                    backgroundSize: '40px 40px'
-                                }}
-                            />
+                <div className="min-w-0 p-4 md:p-8 lg:p-10">
+                    <div className="mb-5 flex flex-col gap-3 border-b-[3px] border-ink pb-5 md:flex-row md:items-end md:justify-between">
+                        <div className="min-w-0">
+                            <span className="font-mono text-[9px] font-black uppercase tracking-[0.18em] text-ink/45">Case study / 001</span>
+                            <h3 className="mt-2 max-w-full break-words font-archivo text-[clamp(1.95rem,6vw,7rem)] uppercase leading-[0.8] tracking-[-0.065em]">PROJECT RECAP</h3>
+                        </div>
+                        <p className="max-w-md font-mono text-xs font-bold uppercase leading-relaxed md:text-right">A compressed field report spanning production, post-production, and technical delivery.</p>
+                    </div>
 
-                            {/* Scanning Line Animation */}
-                            <div className="absolute inset-0 z-0 bg-linear-to-b from-transparent via-white/5 to-transparent h-full w-full animate-pulse pointer-events-none" />
-
-                            {/* Tech Decor: ID Numbers */}
-                            <div className="absolute top-6 left-6 text-[10px] text-gray-600 font-mono tracking-widest">
-                                SYS.RECAP//ID:904-X
-                            </div>
-                            <div className="absolute bottom-6 right-6 text-[10px] text-gray-600 font-mono tracking-widest">
-                                SECURE_CHANNEL_LOCKED
-                            </div>
-
-                            {/* Tech Decor: Brackets */}
-                            <div className="absolute top-0 left-0 w-16 h-16 border-t border-l border-gray-800" />
-                            <div className="absolute top-0 right-0 w-16 h-16 border-t border-r border-gray-800" />
-                            <div className="absolute bottom-0 left-0 w-16 h-16 border-b border-l border-gray-800" />
-                            <div className="absolute bottom-0 right-0 w-16 h-16 border-b border-r border-gray-800" />
-
-                            {/* Main Interactive Area */}
-                            <div className="relative z-10 flex flex-col items-center gap-8">
-                                <div className="font-mono text-gray-500 text-sm tracking-[0.25em] text-center animate-pulse">
-                                    {"// ENCRYPTED_SIGNAL_DETECTED"}
-                                </div>
-
-                                <div className="max-w-xl px-6 text-center">
-                                    <p className="text-balance text-lg md:text-2xl font-bold uppercase text-white">
-                                        Selected multimedia production reel
-                                    </p>
-                                    <p className="mt-2 font-mono text-[10px] md:text-xs uppercase leading-relaxed tracking-widest text-gray-500">
-                                        Direction // Camera // Edit // Color // Sound
-                                    </p>
-                                </div>
-
-                                <button
-                                    onClick={() => setIsVisible(true)}
-                                    className="group relative px-6 sm:px-12 md:px-16 py-5 md:py-7 bg-black/80 border border-white/30 text-white font-mono text-sm sm:text-base md:text-xl tracking-wider overflow-hidden hover:border-interaction-red hover:text-interaction-red transition-all duration-500 cursor-pointer shadow-[0_0_20px_-5px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_-10px_rgba(255,0,0,0.5)] backdrop-blur-sm"
-                                >
-                                    {/* Ambient Glow Animation (Default) */}
-                                    <div className="absolute inset-0 bg-white/5 animate-pulse" />
-
-                                    {/* Hover Fill Effect (Glitchy Red) */}
-                                    <div className="absolute inset-0 bg-interaction-red/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-
-                                    {/* Button Content */}
-                                    <span className="relative z-10 flex items-center gap-3 md:gap-4 group-hover:gap-6 transition-all duration-300">
-                                        <Terminal className="w-5 h-5 md:w-6 md:h-6 animate-pulse" />
-                                        <span>INITIALIZE_RECAP</span>
-                                        <span className="animate-pulse text-interaction-red">_</span>
-                                    </span>
-
-                                    {/* Corner Accents on Button */}
-                                    <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-current opacity-50 group-hover:opacity-100 transition-all duration-300" />
-                                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-current opacity-50 group-hover:opacity-100 transition-all duration-300" />
-                                    <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-current opacity-0 group-hover:opacity-100 transition-all duration-300 delay-75" />
-                                    <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-current opacity-0 group-hover:opacity-100 transition-all duration-300 delay-75" />
-
-                                    {/* Scanline / Glitch Overlay */}
-                                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
-                                </button>
-
-                                <div className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-mono group hover:text-gray-300 transition-colors cursor-default flex flex-col items-center gap-2">
-                                    <span>Awaiting Decryption Key...</span>
-                                    <span className="h-px w-0 group-hover:w-24 bg-interaction-red transition-all duration-500 delay-100" />
-                                </div>
-                            </div>
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="video"
-                            initial={{ opacity: 0, scale: 0.98 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="relative w-full aspect-video group"
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
-                        >
-                            {/* Scanline Overlay */}
-                            <div className={`absolute inset-0 z-10 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-size-[100%_2px,3px_100%] bg-repeat ${isHovered ? "opacity-50" : "opacity-20"} transition-opacity duration-300`} />
-
-                            {/* CRT Screen Border Effect */}
-                            <div className="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_100px_rgba(0,0,0,0.9)]" />
-
-                            {/* Terminate Button */}
-                            <button
-                                onClick={() => setIsVisible(false)}
-                                className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-1 bg-black/80 border border-gray-600/50 text-gray-400 hover:text-white text-xs font-mono tracking-widest hover:bg-gray-800 hover:border-white transition-all duration-300 cursor-pointer"
-                            >
-                                <X className="w-3 h-3" />
-                                TERMINATE_SIGNAL
-                            </button>
-
+                    <div className="relative h-[260px] overflow-hidden border-[3px] border-ink bg-ink md:aspect-video md:h-auto">
+                        {open ? (
                             <iframe
-                                width="100%"
-                                height="100%"
                                 src="https://www.youtube.com/embed/vj0yMO6_XN0?autoplay=1&rel=0&modestbranding=1"
-                                title="Project Recap"
-                                frameBorder="0"
+                                title="Rafif Sidqi selected multimedia production reel"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 allowFullScreen
-                                className="w-full h-full object-cover"
-                            ></iframe>
+                                className="absolute inset-0 h-full w-full"
+                            />
+                        ) : null}
 
-                            {/* Corner Accents */}
-                            <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-white opacity-50 group-hover:opacity-100 transition-opacity" />
-                            <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-white opacity-50 group-hover:opacity-100 transition-opacity" />
+                        {[
+                            { key: "top", className: "left-0 top-0 w-full bg-ink", openStyle: { height: 0 }, closedStyle: { height: "50%" } },
+                            { key: "bottom", className: "bottom-0 left-0 w-full bg-ink", openStyle: { height: 0 }, closedStyle: { height: "50%" } },
+                            { key: "left", className: "left-0 top-0 h-full border-r-[3px] border-paper bg-ink", openStyle: { width: 0 }, closedStyle: { width: "50%" } },
+                            { key: "right", className: "right-0 top-0 h-full border-l-[3px] border-paper bg-ink", openStyle: { width: 0 }, closedStyle: { width: "50%" } },
+                        ].map((panel) => (
+                            <motion.div
+                                key={panel.key}
+                                aria-hidden="true"
+                                className={`absolute z-10 ${panel.className}`}
+                                animate={open ? panel.openStyle : panel.closedStyle}
+                                transition={shutter}
+                            />
+                        ))}
 
-                            {/* Status Text */}
-                            <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 font-mono text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                                Playback_Active
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
-        </section>
+                        <AnimatePresence>
+                            {!open ? (
+                                <motion.div
+                                    key="gate"
+                                    initial={reduceMotion ? false : { scale: 1.08 }}
+                                    animate={{ scale: 1 }}
+                                    exit={{ scale: 0.92, opacity: 0 }}
+                                    className="absolute inset-0 z-20 flex flex-col items-center justify-center p-5 text-center text-paper"
+                                >
+                                    <span className="w-full max-w-sm break-words px-2 font-mono text-[8px] font-black uppercase tracking-[0.14em] text-paper/55 md:text-[9px] md:tracking-[0.22em]">Encrypted signal detected // archive 904-X</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => setOpen(true)}
+                                        className="mt-6 flex items-center gap-4 border-[3px] border-paper bg-paper px-6 py-4 font-archivo text-xl uppercase text-ink transition-transform hover:-translate-x-1 hover:-translate-y-1 md:text-3xl"
+                                    >
+                                        <Play className="h-5 w-5 fill-current" /> Initialize reel
+                                    </button>
+                                </motion.div>
+                            ) : (
+                                <motion.button
+                                    key="close"
+                                    type="button"
+                                    onClick={() => setOpen(false)}
+                                    initial={{ y: -60 }}
+                                    animate={{ y: 0 }}
+                                    exit={{ y: -60 }}
+                                    className="absolute right-3 top-3 z-30 flex items-center gap-2 border-[3px] border-paper bg-ink px-3 py-2 font-mono text-[9px] font-black uppercase text-paper hover:bg-signal hover:text-[#050505]"
+                                >
+                                    <X className="h-4 w-4" /> Terminate
+                                </motion.button>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </div>
+            </div>
+
+            <div className="overflow-hidden border-b-[3px] border-ink bg-signal py-2 text-[#050505]">
+                <div className="brutal-marquee flex w-max whitespace-nowrap font-archivo text-2xl uppercase tracking-[-0.03em] md:text-4xl">
+                    <span className="pr-10">DIRECTION / CAMERA / EDIT / COLOR / SOUND / DELIVERY /</span>
+                    <span className="pr-10" aria-hidden="true">DIRECTION / CAMERA / EDIT / COLOR / SOUND / DELIVERY /</span>
+                </div>
+            </div>
+        </BrutalistSection>
     );
 }
